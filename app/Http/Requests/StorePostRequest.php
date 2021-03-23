@@ -32,8 +32,8 @@ class StorePostRequest extends FormRequest
     public function messages()
     {
         return  [
-            'title.required' => 'show this message',
-            'title.min' => 'override min validation rule default message',
+            'title.required' => 'Please Enter Post Title',
+            'title.min' => 'Please Enter at Least 3 chars',
         ];
     }
 }

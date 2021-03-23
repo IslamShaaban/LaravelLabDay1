@@ -3,7 +3,15 @@
 @section('title')Index Page @endsection
 
 @section('content')
-
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <a href="{{route('posts.create')}}" class="btn btn-success" style="margin-bottom: 20px;">Create Post</a>
 
 <table class="table">
@@ -26,8 +34,8 @@
         <td>{{ $post->user ? $post->user->name : 'user not found' }}</td>
         <td>{{ \Carbon\Carbon::parse($post->created_at, 'd/m/Y')->isoFormat('ddd Do \of MMMM YYYY')}}</td>
         <td>
-          <a href="{{ route('posts.show',['post' => $post->id]) }}" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-info" style="margin-bottom: 20px;">View</a>
-              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <button data-toggle="modal" data-target="#exampleModalCenter{{$post->id}}" class="btn btn-info" style="margin-bottom: 20px;">View</button>
+              <div class="modal fade" id="exampleModalCenter{{$post->id}}"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -57,8 +65,8 @@
                 </div>
               </div>
 
-          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal2" data-whatever="@getbootstrap" style="margin-bottom: 20px;">Edit</button>
-          <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <a  href="{{ route('posts.update',['post' => $post->id]) }}" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal2{{$post->id}}" data-whatever="@getbootstrap" style="margin-bottom: 20px;">Edit</a>
+          <div class="modal fade" id="exampleModal2{{$post->id}}"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -90,9 +98,10 @@
                   
                 </div>
                 <div class="modal-footer">
+                  
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   
-                  <button type="submit" class="btn btn-success">Save Changes</button>
+                  <a href="{{ route('posts.update',['post' => $post->id])}}" class="btn btn-success">Save Changes</a>
                 </div>
               </div>
               </form>
@@ -126,8 +135,8 @@
           </div>
         </td>
       </tr>
-    @endforeach
     </tbody>
+    @endforeach
 </table>
 {{$posts->links("pagination::bootstrap-4")}}
 @endsection
